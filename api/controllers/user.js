@@ -43,7 +43,7 @@ const user_signup = (req, res, next) => {
     });
 };
 
-cconst user_login = (req, res, next) => {
+const user_login = (req, res, next) => {
   User.find({ email: req.body.email })
     .exec()
     .then((user) => {
