@@ -43,7 +43,7 @@ const user_signup = (req, res, next) => {
     });
 };
 
-const user_login = (req, res, next) => {
+cconst user_login = (req, res, next) => {
   User.find({ email: req.body.email })
     .exec()
     .then((user) => {
@@ -52,29 +52,36 @@ const user_login = (req, res, next) => {
           message: 'Auth failed',
         });
       }
+
       bcrypt.compare(req.body.password, user[0].password, (err, result) => {
         if (err) {
           return res.status(401).json({
             message: 'Auth failed',
           });
         }
+
         if (result) {
+          // Dodaj pole admin do odpowiedzi
           const token = jwt.sign(
             {
               email: user[0].email,
               userId: user[0]._id,
+              admin: user[0].admin, // Dodaj pole admin
             },
             process.env.JWT_KEY,
             {
               expiresIn: '1h',
             }
           );
+
           return res.status(200).json({
             message: 'Auth successful',
-            userId: user[0]._id, // Dodaj ID użytkownika do odpowiedzi
+            userId: user[0]._id,
             token: token,
+            admin: user[0].admin, // Dodaj pole admin do odpowiedzi
           });
         }
+
         res.status(401).json({
           message: 'Auth failed',
         });
