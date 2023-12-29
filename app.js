@@ -9,6 +9,7 @@ import userRoutes from './api/routes/user.js';
 
 const app = express();
 
+console.log('MONGO:  ' + process.env.MONGO_ATLAS_PW);
 mongoose
   .connect(
     'mongodb+srv://artureczku:' +
